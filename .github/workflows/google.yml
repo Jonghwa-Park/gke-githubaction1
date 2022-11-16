@@ -18,11 +18,11 @@ on:
 
 env:
   PROJECT_ID: ${{ secrets.GKE_PROJECT }}
-  GAR_LOCATION: asia.gcr.io # TODO: update region of the Artifact Registry
+  REGISTRY_HOSTNAME: asia.gcr.io
+  GITHUB_SHA: ${{ github.sha }}
   GKE_CLUSTER: gke-githubaction-cluster-1    # TODO: update to cluster name
   GKE_ZONE: asia-east1-a   # TODO: update to cluster zone
   DEPLOYMENT_NAME: gke-test # TODO: update to deployment name
-  REPOSITORY: gke-githubaction-1 # TODO: update to Artifact Registry docker repository
   IMAGE: static-site
 
 jobs:
@@ -69,18 +69,18 @@ jobs:
         cluster_name: ${{ env.GKE_CLUSTER }}
         location: ${{ env.GKE_ZONE }}
 
-    # Build the Docker image
+   # Build the Docker image
     - name: Build
-      run: |-
-        docker build \
-          --tag "$GAR_LOCATION-docker.pkg.dev/$PROJECT_ID/$REPOSITORY/$IMAGE:$GITHUB_SHA" \
+      run: |
+        ./gradlew build
+        docker build -t "$REGISTRY_HOSTNAME"/"$GKE_PROJECT"/"$IMAGE":"$GITHUB_SHA" \
           --build-arg GITHUB_SHA="$GITHUB_SHA" \
-          --build-arg GITHUB_REF="$GITHUB_REF" \
-          .
-    # Push the Docker image to Google Artifact Registry
+          --build-arg GITHUB_REF="$GITHUB_REF" .
+    # Push the Docker image to Google Container Registry
     - name: Publish
-      run: |-
-        docker push "$GAR_LOCATION-docker.pkg.dev/$PROJECT_ID/$REPOSITORY/$IMAGE:$GITHUB_SHA"
+      run: |
+        docker push $REGISTRY_HOSTNAME/$GKE_PROJECT/$IMAGE:$GITHUB_SHA
+        
     # Set up kustomize
     - name: Set up Kustomize
       run: |-
