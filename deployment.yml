@@ -18,7 +18,7 @@ spec:
         app: demo
     spec:
       containers:
-      - image: gcr.io/keen-berm-368810/IMAGE:TAG
+      - image: gcr.io/keen-berm-368810/static-site:latest
         name: demo
         resources: {}
 status: {}
