@@ -15,7 +15,6 @@ name: Build and Deploy to GKE
 on:
   push:
     branches: [ "master" ]
-    
 env:
   PROJECT_ID: ${{ secrets.GKE_PROJECT }}
   REGISTRY_HOSTNAME: asia.gcr.io
