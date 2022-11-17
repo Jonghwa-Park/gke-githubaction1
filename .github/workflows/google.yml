@@ -18,7 +18,7 @@ on:
     
 env:
   PROJECT_ID: ${{ secrets.GKE_PROJECT }}
-  REGISTRY_HOSTNAME: asia.gcr.io
+  REGISTRY_HOSTNAME: gcr.io
   GITHUB_SHA: ${{ github.sha }}
   GKE_CLUSTER: gke-githubaction-cluster-1    # TODO: update to cluster name
   GKE_ZONE: asia-east1-a   # TODO: update to cluster zone
