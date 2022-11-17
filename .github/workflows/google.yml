@@ -61,6 +61,10 @@ jobs:
       with:
         cluster_name: ${{ env.GKE_CLUSTER }}
         location: ${{ env.GKE_ZONE }}
+    - name: Test Gcloud
+      run : |
+          gcloud auth configure-docker
+          docker-credential-gcloud list
         
 
    # Build the Docker image
